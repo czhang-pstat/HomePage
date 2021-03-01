@@ -1,12 +1,12 @@
 module.exports = {
   pathPrefix: "/HomePage",
   siteMetadata: {
-    title: `Chao|Home Page`,
+    title: `Chao's Home Page`,
     name: `Chao Zhang`,
     siteUrl: `https://czhang-pstat.github.io/HomePage`,
     description: `research`,
     hero: {
-      heading: `Thoughs & code on functional data analysis, deep learning, and Formula 1.`,
+      heading: `Thoughs & code on functional data analysis, deep learning, and Formula one.`,
       maxWidth: 752,
     },
     social: [

@@ -32,7 +32,7 @@ export default class HTML extends React.Component {
           <script dangerouslySetInnerHTML={{__html: MathJaxConfig}} />
           <script
             defer
-            src="https://cdn.bootcss.com/mathjax/2.7.4/latest.js?config=TeX-AMS_SVG"
+            src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML'
           />
         </head>
         <body {...this.props.bodyAttributes}>
