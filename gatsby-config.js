@@ -3,10 +3,10 @@ module.exports = {
   siteMetadata: {
     title: `Chao|Home Page`,
     name: `Chao Zhang`,
-    siteUrl: `https://www.pstat.ucsb.edu/`,
+    siteUrl: `https://czhang-pstat.github.io/HomePage`,
     description: `research`,
     hero: {
-      heading: `Thoughs and code on functional data analysis, deep learning, and Formula 1.`,
+      heading: `Thoughs & code on functional data analysis, deep learning, and Formula 1.`,
       maxWidth: 752,
     },
     social: [
