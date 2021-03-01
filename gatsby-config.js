@@ -1,12 +1,13 @@
 module.exports = {
+  pathPrefix: "/home_page",
   siteMetadata: {
-    title: `Novela by Narative`,
-    name: `Narative`,
-    siteUrl: `https://novela.narative.co`,
-    description: `This is my description that will be used in the meta tags and important for search results`,
+    title: `Chao|Home Page`,
+    name: `Chao Zhang`,
+    siteUrl: `https://www.pstat.ucsb.edu/`,
+    description: `research`,
     hero: {
-      heading: `Welcome to Novela, the simplest way to start publishing with Gatsby.`,
-      maxWidth: 652,
+      heading: `Thoughs and code on functional data analysis, deep learning, and Formula 1.`,
+      maxWidth: 752,
     },
     social: [
       {
