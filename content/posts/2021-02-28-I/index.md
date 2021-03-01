@@ -30,12 +30,38 @@ $$
 
 Denote $\mu\_{\oplus}$ the template measure of the random measures that take values in $\mathcal{W}\_2$.  There exists an isometric isomorphism between $\mathcal{W}\_2$ and the tangent space $\mathcal{T}\_{\mu\_\oplus}$, which is a separable Hilbert space -- this nice Hilbertian strucure does most of the heavy lifting.
 
-Let's skip forward a bit and jump to our main topic.  Suppose we are able to obtain an optimal transport map $T = F^{-1} \circ F\_{\oplus}$ in tangent space with $F\_\oplus$ being the template cdf (the other cases will be updated later this week).  Let's take a look at how we can revocer densities from a numerical perspective.
+We will skip forward a bit and jump to our main topic.  Suppose we have a template density $f\_{\oplus}$ and are able to obtain an optimal transport map $T = F^{-1} \circ F\_{\oplus}$ in tangent space centered at $f\_{\oplus}$ (the other cases will be updated later this week).  Let's take a look at how we can revocer the density pointed by $T$ from a numerical perspective.  We will used $u$ as elements in the support of $f\_{\oplus}$ and $s \in [0,1]$ throughout.
 
-## Approach I: Differentiation and interpolation
+## Approach 1: I&D (interpolation and differentiation)
 
-Based on the definition $T(u) = F^{-1} \circ F\_{\oplus}(u)$, one can simply...
+Based on the definition $T(u) = F^{-1} \circ F\_{\oplus}(u)$, one can reply on the change of variable, $s = F\_{\oplus}(u)$ and obtain $F^{-1}(s)$ directly.  Invert the quantile function, take derivative on the cdf, one gets the density.  Below is a code example where we set $f\_{\oplus}$ and $f$ to be $Beta(2,5)$ and $Gamma(3,0.5)$, respectively, and recover $f$ from $T$.
 
+```R
+# Approach 1.
+gamma_1_pdf <- dgamma(seq(0, 2, by = 0.001), shape = 3, rate = 5)
+plot(seq(0, 2, by = 0.001), gamma_1_pdf)
+
+beta_1_pdf <- dbeta(seq(0, 1, by = 0.0005), 2, 5)
+
+beta_1_cdf <- cumsum(beta_1_pdf) * 0.0005
+
+opt_1 <- approx(cumsum(gamma_1_pdf) * 0.001, seq(0, 2, by = 0.001),
+                xout = beta_1_cdf, method = "linear", rule = 2)
+
+plot(seq(0, 2, by = 0.001), opt_1$y)
+
+target_pdf <- diff(beta_1_cdf)/diff(opt_1$y)
+
+plot(opt_1$y[2:2000], target_pdf[1:2000])
+```
+
+<div className="Image__Small">
+  <img
+    src="./images/p1.jpg"
+    title="pdfs"
+    alt=""
+  />
+</div>
 
 $\mathcal{W}_2$.
 
