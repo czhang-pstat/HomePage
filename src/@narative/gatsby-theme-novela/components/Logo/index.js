@@ -13,8 +13,7 @@ export default function Logo({ fill }) {
  width="173.400000" height="13.000000" viewBox="0 0 1734.000000 130.000000"
  preserveAspectRatio="xMidYMid meet">
 
-<g transform="translate(0.000000,130.000000) scale(0.10000,-0.10000)"
-fill="#000000" stroke="none">
+<g transform="translate(0.000000,130.000000) scale(0.10000,-0.10000)" fill="#000000" stroke="none">
 <path fill={fill} d="M1769 1259 c-219 -32 -406 -214 -454 -444 -19 -91 -19 -254 0 -347
 47 -227 205 -384 426 -424 189 -34 378 14 489 125 50 50 104 149 119 218 8 40
 8 42 -18 47 -14 3 -44 6 -65 8 -37 3 -39 1 -51 -37 -41 -137 -133 -219 -276
