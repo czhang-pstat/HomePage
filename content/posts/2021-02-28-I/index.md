@@ -32,27 +32,25 @@ Denote $\mu\_{\oplus}$ the template measure of the random measures that take val
 
 We will skip forward a bit and jump to our main topic.  Suppose we have a template density $f\_{\oplus}$ and are able to obtain an optimal transport map $T = F^{-1} \circ F\_{\oplus}$ in tangent space centered at $f\_{\oplus}$ (the other cases will be updated later this week).  Let's take a look at how we can revocer the density pointed by $T$ from a numerical perspective.  We will used $u$ as elements in the support of $f\_{\oplus}$ and $s \in [0,1]$ throughout.
 
-## Approach 1: I&D (interpolation and differentiation)
+## Approach 1: D&I (differentiation and interpolation)
 
-Based on the definition $T(u) = F^{-1} \circ F\_{\oplus}(u)$, one can reply on the change of variable, $s = F\_{\oplus}(u)$ and obtain $F^{-1}(s)$ directly.  Invert the quantile function, take derivative on the cdf, one gets the density.  Below is a code example where we set $f\_{\oplus}$ and $f$ to be $Beta(2,5)$ and $Gamma(3,0.5)$, respectively, and recover $f$ from $T$.
+Below is a code example and plot where we set $f\_{\oplus}$ and $f$ to be $Beta(2,5)$ and truncated $Gamma(6,0.2)$ on $[0,2]$, respectively.
 
 ```R
 # Approach 1.
-gamma_1_pdf <- dgamma(seq(0, 2, by = 0.001), shape = 3, rate = 5)
-plot(seq(0, 2, by = 0.001), gamma_1_pdf)
+gamma_1_support <- seq(0, 2, by = 0.001)
+gamma_1_pdf <- dgamma(gamma_1_support, shape = 6, rate = 5)
+gamma_1_pdf <- gamma_1_pdf/sum(gamma_1_pdf * 0.001)
 
-beta_1_pdf <- dbeta(seq(0, 1, by = 0.0005), 2, 5)
+beta_1_support <- seq(0, 1, by = 0.0005)
+beta_1_pdf <- dbeta(beta_1_support, 2, 5)
+beta_1_pdf <- beta_1_pdf/sum(beta_1_pdf * 0.0005)
 
-beta_1_cdf <- cumsum(beta_1_pdf) * 0.0005
+beta_1_cdf <- cumsum(beta_1_pdf*0.0005)
 
-opt_1 <- approx(cumsum(gamma_1_pdf) * 0.001, seq(0, 2, by = 0.001),
+# Optimal transport.
+opt_1 <- approx(cumsum(gamma_1_pdf*0.001), gamma_1_support,
                 xout = beta_1_cdf, method = "linear", rule = 2)
-
-plot(seq(0, 2, by = 0.001), opt_1$y)
-
-target_pdf <- diff(beta_1_cdf)/diff(opt_1$y)
-
-plot(opt_1$y[2:2000], target_pdf[1:2000])
 ```
 
 <div className="Image__Small">
@@ -63,132 +61,27 @@ plot(opt_1$y[2:2000], target_pdf[1:2000])
   />
 </div>
 
-$\mathcal{W}_2$.
+Based on the definition $T(u) = F^{-1} \circ F\_{\oplus}(u)$, one can reply on the change of variable, $s = F\_{\oplus}(u)$ and obtain $F^{-1}(s)$ directly.  Invert the quantile function, take derivative on the cdf.  However, one needs to be mindful about the range of $T$.  If there are portions of $T$ with steep slopes, one needs to increase the sampling rate to ensure the derivative on the inverted $T$ preserves enough precision.  However, the range of $T$ is not directly under control.  Alternatively, a better approach is to rely on the following fact
 
+$$
+\frac{\mathrm{d}}{\mathrm{d} u} T(u) = \frac{\mathrm{d}}{\mathrm{d} u} F^{-1} \circ {F}\_{\oplus}(u) = \frac{{f}\_\oplus(u)}{f \circ T(u)} \Rightarrow  \frac{{f}\_\oplus(u)}{\frac{\mathrm{d}}{\mathrm{d} u} T(u)} = f \circ T(u).
+$$
 
+In other words, one simply takes the numerical differention of $T$, where the domain grid is under direct control, and then take reciprocal and multiply with the Wasserstein mean density.  Below is a code example and a plot demostrating that the recovered density overlays perfectly on the true density.
 
-
-
-
-$3^2$ My first post using `@narative/gatsby-theme-novela`. Novela is built by the team at [Narative](https://narative.co), and built for everyone that loves the web.
-
-## Headers
-
-# H1
-
-It is recommended to NOT use H1s as it is reserved for the article heading. Any H1 is set as an H2.
-
-## H2
-
-### H3
-
-#### H4
-
-##### H5
-
-###### H6
-
-## Emphasis
-
-Emphasis, aka italics, with _asterisks_ or _underscores_.
-
-Strong emphasis, aka bold, with **asterisks** or **underscores**.
-
-Combined emphasis with **asterisks and _underscores_**.
-
-Strikethrough uses two tildes. ~~Scratch this.~~
-
-## Lists
-
-1. First ordered list item
-2. Another item
-3. Actual numbers don't matter, just that it's a number
-
-- Unordered list can use asterisks
-
-* Or minuses
-
-- Or pluses
-
-## Links
-
-[I'm an inline-style link](https://www.google.com)
-
-[I'm an inline-style link with title](https://www.google.com "Google's Homepage")
-
-[I'm a reference-style link][arbitrary case-insensitive reference text]
-
-[I'm a relative reference to a repository file](../blob/master/LICENSE)
-
-[You can use numbers for reference-style link definitions][1]
-
-Or leave it empty and use the [link text itself].
-
-URLs and URLs in angle brackets will automatically get turned into links.
-http://www.example.com or <http://www.example.com> and sometimes
-example.com (but not on Github, for example).
-
-Some text to show that the reference links can follow later.
-
-[arbitrary case-insensitive reference text]: https://www.mozilla.org
-[1]: http://slashdot.org
-[link text itself]: http://www.reddit.com
-
-## Images
+```R
+# T'
+opt_1_driv <- diff(opt_1$y)/0.0005
+# Recover density.
+target_pdf_1 <- beta_1_pdf[-1]/opt_1_driv
+```
 
 <div className="Image__Small">
   <img
-    src="./images/article-image-2.jpg"
-    title="Logo Title Text 1"
-    alt="Alt text"
+    src="./images/p2.jpg"
+    title="recovered pdf"
+    alt=""
   />
 </div>
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-
-## Code and Syntax Highlighting
-
-```javascript
-var s = "JavaScript syntax highlighting";
-alert(s);
-```
-
-```
-No language indicated, so no syntax highlighting.
-But let's throw in a <b>tag</b>.
-```
-
-### JSX
-
-```jsx
-import React from "react";
-import { ThemeProvider } from "theme-ui";
-import theme from "./theme";
-
-export default props => (
-  <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
-);
-```
-
-## Blockquotes
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing.
-
-> Blockquotes are very handy in email to emulate reply text.
-> This line is part of the same quote.
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
-
-## Horizontal Rule
-
-Horizontal Rule
-
-Three or more...
-
----
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
-
----
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+## Approach 2: To be continued......
