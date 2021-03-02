@@ -61,7 +61,7 @@ opt_1 <- approx(cumsum(gamma_1_pdf * 0.001), gamma_1_support,
   />
 </div>
 
-Based on the definition $T(u) = F^{-1} \circ F\_{\oplus}(u)$, one can rely on the change of variable $s = F\_{\oplus}(u)$ to obtain $F^{-1}(s)$ directly.  Invert the quantile function, take derivative on the cdf.  However, one needs to be mindful about the range of $T$.  If there are portions of $T$ with steep slopes, it is necessary to increase the sampling rate to ensure the derivative on the inverted $T$ preserves enough precision.  However, this a an ad hoc approach as the range of $T$ is not directly under control.  Alternatively, a better approach is to utilize the following fact
+Based on the definition $T(u) = F^{-1} \circ F\_{\oplus}(u)$, one can rely on the change of variable $s = F\_{\oplus}(u)$ to obtain $F^{-1}(s)$ directly.  Invert the quantile function, take derivative on the cdf.  However, one needs to be mindful about the range of $T$.  If there are portions of $T$ with steep slopes, it is necessary to increase the sampling rate to ensure the derivative on the inverted $T$ preserves enough precision.  However, this is an ad hoc approach as the range of $T$ is not directly under control.  Alternatively, a better approach is to utilize the following fact
 
 $$
 \frac{\mathrm{d}}{\mathrm{d} u} T(u) = \frac{\mathrm{d}}{\mathrm{d} u} F^{-1} \circ {F}\_{\oplus}(u) = \frac{{f}\_\oplus(u)}{f \circ T(u)} \Rightarrow  \frac{{f}\_\oplus(u)}{\frac{\mathrm{d}}{\mathrm{d} u} T(u)} = f \circ T(u).
