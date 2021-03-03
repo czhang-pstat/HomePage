@@ -6,7 +6,7 @@ module.exports = {
     siteUrl: `https://czhang-pstat.github.io/HomePage`,
     description: `research`,
     hero: {
-      heading: `Thoughts & code on functional data analysis, deep learning, and Formula one.`,
+      heading: `Thoughts & Code on Functional Data Analysis, Deep Learning, and Formula One.`,
       maxWidth: 752,
     },
     social: [
