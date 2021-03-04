@@ -1,5 +1,5 @@
 module.exports = {
-  pathPrefix: "/HomePage",
+  pathPrefix: `/HomePage`,
   siteMetadata: {
     title: `Chao's Home Page`,
     name: `Chao Zhang`,
@@ -18,15 +18,15 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: "@narative/gatsby-theme-novela",
+      resolve: `@narative/gatsby-theme-novela`,
       options: {
-        contentPosts: "content/posts",
-        contentAuthors: "content/authors",
-        basePath: "/",
+        contentPosts: `content/posts`,
+        contentAuthors: `content/authors`,
+        basePath: `/`,
         authorsPage: true,
         sources: {
           local: true,
-          // contentful: true,
+          contentful: false,
         },
       },
     },
