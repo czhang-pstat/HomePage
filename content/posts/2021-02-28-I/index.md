@@ -20,7 +20,7 @@ The rest of this post will be developed under the case of the Wasserstein geomet
 
 ## Wasserstein geometry is also known as *the eath mover's distance*, so let's grab our shovels
 
-A thorough account of the work behind the Wassersetin geometry is clearly beyond the scope of what this post aims to serve, so we will just look at the simple case of probability measures on $\mathbb{R}$ with finite second moments, i.e., $\mathcal{W}\_2 = \\{ \mu: \int x^2 \, \mathrm{d} \mu(x) <\infty\\}$.  Denote by $\mathcal{D}$ the subset of $\mathcal{W}_2$ which admits densities, i.e., absolute continuous with respect to the Lebesgue measure.
+A thorough account of the work behind the Wassersetin geometry is clearly beyond the scope of what this post aims to serve, so we will just look at the simple case of probability measures on $\mathbb{R}$ with finite second moments, i.e., $\mathcal{W}\_2 = \\{ \mu: \int x^2 \, \mathrm{d} \mu(x) <\infty\\}$.  Denote by $\mathcal{D}$ the subset of $\mathcal{W}_2$ which admits densities, i.e., absolutly continuous with respect to the Lebesgue measure.
 
 For any two measures $\mu$, $\nu \in \mathcal{W}_2$, with corresponding cumulative distribution functions (cdfs) $F$, $G$, respectively, the Wasserstein distance between the two distributions addmits a closed form
 
